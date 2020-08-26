@@ -20,4 +20,13 @@ func main() {
 	for i = 0; i < len(arr3); i++ {
 		fmt.Println(arr3[i])
 	}
+
+	for i, v := range arr2 {
+		fmt.Println(i)
+		fmt.Println(v)
+	}
+
+	// for {
+	// 	fmt.Println(1)
+	// }
 }

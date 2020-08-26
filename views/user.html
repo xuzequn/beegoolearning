@@ -8,4 +8,26 @@
 ID：{{.user.Id}}
 NAME: {{.user.Name}}
 AGE: {{.user.Age}}
+
+<br>=====================<br>
+{{/*循环数组的两种验证方式*/}}
+{{range .arr}}
+    {{.}}
+{{end}}
+
+<br>
+
+{{range $i, $v := .arr}}
+    {{$i}}
+    {{$v}}
+    <br>
+{{end}}
+
+
+<br>=======================<br>
+{{range .arr_struct}}
+    {{.Id}}
+    {{.Name}}
+{{end}}
+
 </html>

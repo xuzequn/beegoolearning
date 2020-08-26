@@ -29,8 +29,15 @@ func (u *UserController) Get() {
 	// struct
 	user := UserStruct{Id: 1, Name: "ssss", Age: 18}
 	u.Data["user"] = user
-	u.TplName = "user.html"
 
 	// array
+	arr := [5]int{9, 8, 7, 6, 5}
+	u.Data["arr"] = arr
+
+	//arr_struct
+	arr_struct := [3]UserStruct{{Id: 1, Name: "2222"}, {Id: 1, Name: "2222"}, {Id: 1, Name: "2222"}}
+	u.Data["arr_struct"] = arr_struct
+
+	u.TplName = "user.html"
 
 }
