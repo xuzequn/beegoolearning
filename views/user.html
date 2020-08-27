@@ -30,4 +30,46 @@ AGE: {{.user.Age}}
     {{.Name}}
 {{end}}
 
+
+<br>======================<br>
+{{.test_map.name}}
+{{.test_map.age}}
+{{.test_map.addr}}
+<br>
+{{range .test_map}}
+    {{.}}
+{{end}}
+<br>
+{{/*map渲染*/}}
+{{range $k, $v := .test_map}}
+    {{$k}}:{{$v}} <br>
+{{end}}
+
+<br>======================<br>
+{{/*结构体和map结合的渲染*/}}
+{{/*{{.map_struct.1.Id}}*/}}
+{{/*{{.map_struct.2.Name}}*/}}
+{{/*{{.map_struct.3.Age}}*/}}
+{{range $k,$v := .map_struct}}
+    {{/*{{$k}}*/}}
+    {{$v.Id}}
+    {{$v.Name}}
+    {{$v.Age}} <br>
+{{end}}
+
+<br>=======================<br>
+
+{{range .slice}}
+    {{.}}
+{{end}}
+
+<br>
+
+{{range $i,$v := .slice}}
+    {{$i}}
+    {{$v}} <br>
+{{end}}
+
+
+
 </html>
