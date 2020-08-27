@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"fmt"
+
 	"github.com/astaxie/beego"
 )
 
@@ -20,6 +22,38 @@ type UserController struct {
 
 type StaticController struct {
 	beego.Controller
+}
+
+//前端传参数到后端
+
+type ParamsController struct {
+	beego.Controller
+}
+
+func (p *ParamsController) Get() {
+	name := p.GetString("name")
+	// url: /params
+	fmt.Println("===========================")
+	fmt.Println(name)
+	fmt.Println("===========================")
+	name2 := p.Input().Get("name")
+	fmt.Println(name2)
+	fmt.Println("===========================")
+	// name3 := p.Ctx.Input.Param("name")
+	// fmt.Println(name3)
+
+	// url: /params/:id:int
+	id := p.GetString(":id")
+	fmt.Println(id)
+
+	// id1 := p.Input().Get(":id")
+	// fmt.Println(id1, "DDDDD")
+
+	id2 := p.Ctx.Input.Param(":id")
+	fmt.Println(id2)
+
+	p.TplName = "param_test.html"
+
 }
 
 func (s *StaticController) Get() {
