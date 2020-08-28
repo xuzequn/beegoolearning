@@ -8,8 +8,8 @@ import (
 
 type UserStruct struct {
 	Id   int
-	Name string
-	Age  int
+	Name string `form:"username"`
+	Age  int    `form:"age"`
 }
 
 type MainController struct {
@@ -54,6 +54,28 @@ func (p *ParamsController) Get() {
 
 	p.TplName = "param_test.html"
 
+}
+
+func (p *ParamsController) Post() {
+	name := p.GetString("username")
+	age, _ := p.GetInt64("age")
+	// price, _ := p.GetFloat("price")
+	// is_true, _ := p.GetBool("is_true")
+	fmt.Println(name)
+	fmt.Println(age)
+	// fmt.Println(price)
+	// fmt.Println(is_true)
+
+	// id1 := p.Input().Get("username")
+	// fmt.Println(id1, "DDDDD")
+
+	user := UserStruct{}
+	err := p.ParseForm(&user) // notice:binding
+	if err == nil {
+		fmt.Println(user)
+	}
+	fmt.Println(err)
+	p.TplName = "success.html"
 }
 
 func (s *StaticController) Get() {

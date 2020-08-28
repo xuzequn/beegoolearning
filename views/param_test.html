@@ -3,8 +3,46 @@
     <head>
         <meta charset="UTF-8">
         <title>Title</title>
+        <script src="/static/js/jquery.min.js"></script>
     </head>
     <body>
         静态文件知识点展示模版
+
+        <!-- <form action="/params"， method="post"> -->
+        <form>
+            user:<input type="text" id="username" name="username"><br>
+            age&nbsp;:<input type="text" id="age" name="age"><br>
+            <!-- price:<input type="text" name="price"><br>
+            true:<input type="radio" name="is_true" value="true">
+            false:<input type="radio" name="is_true" value="false"><br> -->
+
+            <input type="button" id="btn" value="submit">
+        </form>
+
+
+        <script>
+            var btn = document.getElementById("btn");
+            btn.onclick = function (en) {
+                var username = document.getElementById("username").value;
+                var age = document.getElementById("age").value;
+                alert(username);
+                alert(age);
+                $.ajax({
+                    url:"/params",
+                    type:"POST",
+                    data:JSON.stringify({
+                        "username":username,
+                        "age":age
+                    }),
+                    dataType:"JSON",
+                    success:function (data) {
+                        alert("success")
+                    },
+                    error:function (data){
+                        alert("fail")
+                    }
+                })
+            }
+        </script>
     </body>
 </html>
