@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/astaxie/beego"
@@ -8,8 +9,8 @@ import (
 
 type UserStruct struct {
 	Id   int
-	Name string `form:"username"`
-	Age  int    `form:"age"`
+	Name string `json:"username"`
+	Age  int    `json:"age"`
 }
 
 type MainController struct {
@@ -28,6 +29,72 @@ type StaticController struct {
 
 type ParamsController struct {
 	beego.Controller
+}
+
+type OtherTypeDataContorller struct {
+	beego.Controller
+}
+
+type FlashController struct {
+	beego.Controller
+}
+
+// flash
+func (f *FlashController) Get() {
+	flash := beego.ReadFromRequest(&f.Controller)
+	notice := flash.Data["notice"]
+	err := flash.Data["error"]
+	fmt.Println(err)
+	if len(err) != 0 {
+		f.TplName = "error.html"
+	} else if len(notice) != 0 {
+		f.TplName = "success.html"
+	} else {
+		f.TplName = "flash.html"
+	}
+
+}
+
+func (f *FlashController) Post() {
+
+	flash := beego.NewFlash()
+
+	username := f.GetString("username")
+	pwd := f.GetString("pwd")
+	fmt.Println(username)
+	fmt.Println(pwd)
+
+	if len(username) == 0 {
+		fmt.Println("username can't null")
+		flash.Error("username can't null")
+		flash.Store(&f.Controller)
+		f.Redirect("/flash_data", 302) //redirect
+	} else if pwd != "123456" {
+		fmt.Println("pwd worng")
+		flash.Error("pwd worng")
+		flash.Store(&f.Controller)
+		f.Redirect("/flash_data", 302)
+	} else {
+		flash.Notice("login success")
+		flash.Store(&f.Controller)
+		f.Redirect("/flash_data", 302)
+	}
+}
+
+func (o *OtherTypeDataContorller) Get() {
+	user := UserStruct{Id: 1, Name: "2131", Age: 18}
+	//json
+	// o.Data["json"] = &user
+	// o.ServeJSON()
+	//xml
+	// o.Data["xml"] = &user
+	// o.ServeXML()
+	//jsonp
+	// o.Data["jsonp"] = &user
+	// o.ServeJSONP()
+	// yml
+	o.Data["yaml"] = &user
+	o.ServeYAML()
 }
 
 func (p *ParamsController) Get() {
@@ -57,25 +124,38 @@ func (p *ParamsController) Get() {
 }
 
 func (p *ParamsController) Post() {
-	name := p.GetString("username")
-	age, _ := p.GetInt64("age")
+	// name := p.GetString("username")
+	// age, _ := p.GetInt64("age")
 	// price, _ := p.GetFloat("price")
 	// is_true, _ := p.GetBool("is_true")
-	fmt.Println(name)
-	fmt.Println(age)
+	// fmt.Println(name)
+	// fmt.Println(age)
 	// fmt.Println(price)
 	// fmt.Println(is_true)
 
 	// id1 := p.Input().Get("username")
 	// fmt.Println(id1, "DDDDD")
 
-	user := UserStruct{}
-	err := p.ParseForm(&user) // notice:binding
-	if err == nil {
-		fmt.Println(user)
-	}
-	fmt.Println(err)
-	p.TplName = "success.html"
+	// user := UserStruct{}
+	// err := p.ParseForm(&user) // notice:binding
+	// if err == nil {
+	// 	fmt.Println(user)
+	// }
+	// fmt.Println(err)
+	// p.TplName = "success.html"
+
+	// get ajax data
+	var user UserStruct
+	body := p.Ctx.Input.RequestBody //二进制json数据
+	// json.Unmarshal(body, &user)
+	fmt.Println(string(body))
+	json.Unmarshal(body, &user)
+	fmt.Println(user.Age)
+	fmt.Println(user)
+	result := map[string]string{"code": "200", "message": "处理成功"}
+	p.Data["json"] = result
+	p.ServeJSON() //返回json格式
+
 }
 
 func (s *StaticController) Get() {

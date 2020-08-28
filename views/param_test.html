@@ -22,7 +22,7 @@
 
         <script>
             var btn = document.getElementById("btn");
-            btn.onclick = function (en) {
+            btn.onclick = function (ev) {
                 var username = document.getElementById("username").value;
                 var age = document.getElementById("age").value;
                 alert(username);
@@ -31,14 +31,20 @@
                     url:"/params",
                     type:"POST",
                     data:JSON.stringify({
-                        "username":username,
-                        "age":age
+                        "username":String(username),
+                        "age":Number(age)
                     }),
                     dataType:"JSON",
                     success:function (data) {
-                        alert("success")
+                        var code = data["code"];
+                        var message = data["message"];
+                        if (code=="200"){
+                           // alert("success")
+                            alert(message)
+                        }
+
                     },
-                    error:function (data){
+                    error:function (data) {
                         alert("fail")
                     }
                 })
